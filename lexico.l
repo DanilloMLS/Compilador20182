@@ -18,6 +18,7 @@ subtracao	(-)
 multiplicacao	([+])
 adicao		([*])
 
+
 lt		(<)
 gt		(>)
 ne		(<>)
