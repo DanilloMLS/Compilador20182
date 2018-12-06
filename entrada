@@ -1,0 +1,9 @@
+program teste;
+var
+	a,b,c: integer
+if a = b then
+begin
+	a := 1;
+else
+	c := a + b;
+end;

@@ -7,166 +7,67 @@ tabela_simbolo tab;
 
 delim		[ \t\n]
 ws		{delim}+
-letra		[a-zA-Z]
+letra		[a-zA-Z_]
 digito		[0-9]
-numeroInteiro	-?{digito}+
-id		({letra}|_)(_|{letra}|{digito})*
-numeroReal	-?{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
-comentario	({})
-divisor		(/)
-subtracao	(-)
-multiplicacao	([+])
-adicao		([*])
-
-
-lt		(<)
-gt		(>)
-ne		(<>)
-eq		(=)
-le		(<=)
-ge		(>=)
+numeroInteiro 	[0-9]*
+id		{letra}({letra}|{digito})*
+numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
 %%
 
-{ws} ;
+{ws}		{}
 
-and	{
-	return AND;
-}
+{numeroInteiro}	{printf("<integer, %s>", yytext);}
+{numeroReal}	{printf("<real, %s>", yytext);}
+":="		{printf("<op, ATTR>");}
+"<"		{printf("<relop, LT>");}
+"<="		{printf("<relop, LE>");}
+"="		{printf("<relop, EQ>");}
+"<>"		{printf("<relop, NE>");}
+">"		{printf("<relop, GT>");}
+">="		{printf("<relop, GE>");}
+"+"		{printf("<op, ADD>");}
+"-"		{printf("<op, SUB>");}
+"*"		{printf("<op, MULT>");}
+"/"		{printf("<op, DIV>");}
+","		{printf("<char, COMMA>");}
+"."		{printf("<char, DOT>");}
+":"		{printf("<char, TWODOTS>");}
+";"		{printf("<char, SEMICOMMA>");}
+"["		{printf("<schar, LBRACKETS>");}
+"]"		{printf("<schar, RBRACKETS>");}
+"("		{printf("<schar, LPARENTESIS>");}
+")"		{printf("<schar, RPARENTESIS>");}
+"{"		{printf("<schar, LCOMMENT>");}
+"}"		{printf("<schar, RCOMMENT>");}
 
-array	{
-	return ARRAY;
-}
+and		{printf("<log, AND>");}
+array		{printf("<type, ARRAY>");}
+begin		{printf("<command, BEGIN>");}
+div		{printf("<op, DIV>");}
+do		{printf("<command, DO>");}
+if		{printf("<condition, IF>");}
+then		{printf("<condition, THEN>");}
+else		{printf("<condition, ELSE>");}
+end		{printf("<command, END>");}
+integer		{printf("<type, INTEGER>");}
+mod		{printf("<op, MOD>");}
+not		{printf("<log, NOT>");}
+of		{printf("<command, OF>");}
+or		{printf("<log, OR>");}
+procedure	{printf("<procedure, PROCEDURE>");}
+program		{printf("<statement, PROGRAM>");}
+read		{printf("<command, READ>");}
+real		{printf("<type, REAL>");}
+var		{printf("<statement, VAR>");}
+while		{printf("<command, WHILE>");}
+write		{printf("<command, WRITE>");}
 
-begin	{
-	return BEGIN;
-}
+{id}		{int cod = instalar_simbolo(&tab,yytext);
+		printf("<ID, %d>", cod);}
 
-div	{
-	return DIV;
-}
-
-do {
-	return DO;
-}
-
-else	{
-	return ELSE;
-}
-
-end	{
-	return END;
-}
-
-for	{
-	return FOR;
-}
-
-if	{
-	return IF;
-}
-
-integer	{
-	return yylval = T_INT;
-	return TYPE;
-}
-
-mod	{
-	return MOD;
-}
-
-not	{
-	return NOT;
-}
-
-of	{
-	return OF;
-}
-
-or	{
-	return OR;
-}
-
-procedure	{
-	return PROCEDURE;
-}
-
-program	{
-	return PROGRAM;
-}
-
-read	{
-	return READ;
-}
-
-then	{
-	return THEN;
-}
-
-var	{
-	return VAR;
-}
-
-while	{
-	return WHILE;
-}
-
-write	{
-	return WRITE;
-}
-
-:=	{ //Ver pq esse tem que ir
-	return ATTR;
-}
-
-{adicao}	{
-	return ADD;
-}
-
-{subtracao}	{
-	return SUB;
-}
-
-{multiplicacao}	{
-	return MULT;
-}
-
-{divisor}	{
-	return DIVIS;
-}
-
-{comentario}	{
-	//printf("%s",  yytext);
-}
-
-{lt}	{
-	return LT;
-}
-
-gt		(>)
-ne		(<>)
-eq		(=)
-le		(<=)
-ge		(>=)
 
 %%
-: atribuição
-; separação de instruções
-< operador relacional
-(>) operador relacional
-[ índices do array
-] índices do array
-{ comentário
-} comentário
-- operação
-+ operação
-* operação
-/ operação
-= atribuição, comparação
-( parênteses
-) parênteses
-, vírgula
-. ponto final
 
 int yywrap() {
 	return 1;
@@ -177,4 +78,5 @@ int main(int argc, char * argv[]) {
 	yylex();
 	exibir_tabela(&tab);
 }
+
 
