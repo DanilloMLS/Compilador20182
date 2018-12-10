@@ -1,8 +1,12 @@
 %{
+#ifndef YYSTYPE
+#define YYSTYPE long int
+#endif
 #include <stdio.h>
-#include "tabelasimb.h"
+#include "tabela.h"
+#include "y.tab.h"
 
-tabela_simbolo tab;
+tabela tab;
 %}
 
 delim		[ \t\n]
@@ -17,8 +21,8 @@ numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
 {ws}		{}
 
-{numeroReal}	yylval.real = atof(yytext); return REALNUMBER;
-{numeroInteiro}	yylval.integer = atoi(yytext); return INTEGERNUMBER;
+{numeroReal}	yylval = atof(yytext); return REALNUMBER;
+{numeroInteiro}	yylval = atoi(yytext); return INTNUMBER;
 ":="		return ATTR;
 "<="		return LE;
 "<"		return LT;
@@ -43,7 +47,7 @@ numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
 and		return AND;
 array		return ARRAY;
-begin		return BEGIN;
+begin		return BEGINN;
 div		return DIV;
 do		return DO;
 if		return IF;
@@ -63,7 +67,7 @@ var		return VAR;
 while		return WHILE;
 write		return WRITE;
 
-{id}		yylval.id = (char *) strdup( yytext ); return ID;
+{id}		yylval = (long int) strdup(yytext); return ID;
 
 
 %%
@@ -72,10 +76,5 @@ int yywrap() {
 	return 1;
 }
 
-int main(int argc, char * argv[]) {
-	inicializar(&tab);
-	yylex();
-	exibir_tabela(&tab);
-}
 
 
