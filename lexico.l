@@ -17,54 +17,53 @@ numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
 {ws}		{}
 
-{numeroInteiro}	{printf("<integer, %s>", yytext);}
-{numeroReal}	{printf("<real, %s>", yytext);}
-":="		{printf("<op, ATTR>");}
-"<"		{printf("<relop, LT>");}
-"<="		{printf("<relop, LE>");}
-"="		{printf("<relop, EQ>");}
-"<>"		{printf("<relop, NE>");}
-">"		{printf("<relop, GT>");}
-">="		{printf("<relop, GE>");}
-"+"		{printf("<op, ADD>");}
-"-"		{printf("<op, SUB>");}
-"*"		{printf("<op, MULT>");}
-"/"		{printf("<op, DIV>");}
-","		{printf("<char, COMMA>");}
-"."		{printf("<char, DOT>");}
-":"		{printf("<char, TWODOTS>");}
-";"		{printf("<char, SEMICOMMA>");}
-"["		{printf("<schar, LBRACKETS>");}
-"]"		{printf("<schar, RBRACKETS>");}
-"("		{printf("<schar, LPARENTESIS>");}
-")"		{printf("<schar, RPARENTESIS>");}
-"{"		{printf("<schar, LCOMMENT>");}
-"}"		{printf("<schar, RCOMMENT>");}
+{numeroReal}	yylval.real = atof(yytext); return REALNUMBER;
+{numeroInteiro}	yylval.integer = atoi(yytext); return INTEGERNUMBER;
+":="		return ATTR;
+"<="		return LE;
+"<"		return LT;
+"="		return EQ;
+"<>"		return NE;
+">="		return GE;
+">"		return GT;
+"+"		return ADD;
+"-"		return SUB;
+"*"		return MULT;
+"/"		return DIV;
+","		return COMMA;
+"."		return DOT;
+":"		return COLON;
+";"		return SEMICOMMA;
+"["		return LBRACKETS;
+"]"		return RBRACKETS;
+"("		return LPARENTESIS;
+")"		return RPARENTESIS;
+"{"		return LCOMMENT;
+"}"		return RCOMMENT;
 
-and		{printf("<log, AND>");}
-array		{printf("<type, ARRAY>");}
-begin		{printf("<command, BEGIN>");}
-div		{printf("<op, DIV>");}
-do		{printf("<command, DO>");}
-if		{printf("<condition, IF>");}
-then		{printf("<condition, THEN>");}
-else		{printf("<condition, ELSE>");}
-end		{printf("<command, END>");}
-integer		{printf("<type, INTEGER>");}
-mod		{printf("<op, MOD>");}
-not		{printf("<log, NOT>");}
-of		{printf("<command, OF>");}
-or		{printf("<log, OR>");}
-procedure	{printf("<procedure, PROCEDURE>");}
-program		{printf("<statement, PROGRAM>");}
-read		{printf("<command, READ>");}
-real		{printf("<type, REAL>");}
-var		{printf("<statement, VAR>");}
-while		{printf("<command, WHILE>");}
-write		{printf("<command, WRITE>");}
+and		return AND;
+array		return ARRAY;
+begin		return BEGIN;
+div		return DIV;
+do		return DO;
+if		return IF;
+then		return THEN;
+else		return ELSE;
+end		return END;
+integer		return INTEGER;
+mod		return MOD;
+not		return NOT;
+of		return OF;
+or		return OR;
+procedure	return PROCEDURE;
+program		return PROGRAM;
+read		return READ;
+real		return REAL;
+var		return VAR;
+while		return WHILE;
+write		return WRITE;
 
-{id}		{int cod = instalar_simbolo(&tab,yytext);
-		printf("<ID, %d>", cod);}
+{id}		yylval.id = (char *) strdup( yytext ); return ID;
 
 
 %%
