@@ -13,7 +13,7 @@ delim		[ \t\n]
 ws		{delim}+
 letra		[a-zA-Z_]
 digito		[0-9]
-numeroInteiro 	[0-9]*
+numeroInteiro 	[0-9]+
 id		{letra}({letra}|{digito})*
 numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
@@ -21,8 +21,8 @@ numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
 
 {ws}		{}
 
-{numeroReal}	yylval = atof(yytext); return REALNUMBER;
 {numeroInteiro}	yylval = atoi(yytext); return INTNUMBER;
+{numeroReal}	yylval = atof(yytext); return REALNUMBER;
 ":="		return ATTR;
 "<="		return LE;
 "<"		return LT;

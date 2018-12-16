@@ -362,13 +362,13 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[111] =
     {   0,
-        3,    3,   48,   47,    1,   21,   22,   13,   11,   15,
+        0,    0,   48,   47,    1,   21,   22,   13,   11,   15,
        12,   16,   14,    2,   17,   18,    6,    7,   10,   46,
        19,   20,   46,   46,   46,   46,   46,   46,   46,   46,
        46,   46,   46,   46,   46,   23,   24,    1,    0,    2,
         0,    4,    5,    8,    9,   46,   46,   46,   46,   46,
        29,   46,   46,   30,   46,   46,   46,   37,   38,   46,
-       46,   46,   46,   46,   46,    2,    0,    2,   25,   46,
+       46,   46,   46,   46,   46,    3,    0,    3,   25,   46,
        46,   28,   46,   33,   46,   35,   36,   46,   46,   46,
        43,   46,   46,   46,   46,   32,   46,   46,   46,   41,
        42,   31,   46,   46,   26,   27,   46,   46,   46,   44,
@@ -806,12 +806,12 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 24 "lexico.l"
-yylval = atof(yytext); return REALNUMBER;
+yylval = atoi(yytext); return INTNUMBER;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 25 "lexico.l"
-yylval = atoi(yytext); return INTNUMBER;
+yylval = atof(yytext); return REALNUMBER;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP

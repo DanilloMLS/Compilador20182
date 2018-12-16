@@ -37,53 +37,50 @@ pilha_contexto *pilha;
 %%
 /*definicao de programa*/
 
+//variavel inicial
 program:
-	cabecalho declaracoes bloco DOT 
+	cabecalho declaracoes// bloco DOT
 	;
 
+//1ª parte: cabeçalho
 cabecalho:
 	PROGRAM ID SEMICOMMA
+	{printf ("\n programa %s\n",$2);}
 	;
 
 declaracoes:
-	declaracao_variaveis declaracao_subprogramas
-	;
-
-declaracao_subprogramas:
-	declaracao_subprogramas declaracao_procedimento
+	declaracoes declaracao// declaracao_subprogramas
 	|
 	;
 
-
-/*definicao de variaveis*/
-
-declaracao_variaveis:
-	VAR bloco_tipos
-	|
+declaracao:
+	declaracoes_variaveis
+	|declaracoes_subprogramas
 	;
 
-bloco_tipos:
-	bloco_variaveis
-	| bloco_arrays
-	| bloco_variaveis bloco_arrays
+declaracoes_subprogramas:
+	PROCEDURE
+	{printf("procedimento\n");}
+	;
+
+//2ª parte: declarações
+declaracoes_variaveis:
+	VAR bloco_variaveis
+	{printf ("declaracao\n");}
+	//|declaracoes_variaveis bloco_tipos
 	;
 
 bloco_variaveis:
 	lista_variaveis
-	| bloco_variaveis lista_variaveis
-	;
+	|bloco_variaveis lista_variaveis
+	;	
 
 lista_variaveis:
 	lista_identificadores COLON tipo SEMICOMMA
 	;
 
-bloco_arrays:
-	lista_arrays
-	| bloco_arrays lista_arrays
-	;
-
-lista_arrays:
-	lista_identificadores COLON ARRAY LBRACKETS INTNUMBER DOT DOT INTNUMBER RBRACKETS OF tipo
+dimensao:
+	LBRACKETS INTNUMBER DOT DOT INTNUMBER RBRACKETS
 	;
 
 lista_identificadores:
@@ -91,91 +88,24 @@ lista_identificadores:
 	| lista_identificadores COMMA ID
 	;
 
-tipo:
+tipo_primitivo:
 	INTEGER
-	| REAL
+	{printf(" inteiro");}
+	|REAL
+	{printf(" real");}
 	;
 
-
-/*definicao de procedimentos*/
-
-declaracao_procedimento:
-	cabecalho_procedimento declaracao_variaveis bloco SEMICOMMA
+tipo_estruturado:
+	ARRAY dimensao OF tipo_primitivo
+	{printf(" estruturado");}
 	;
 
-cabecalho_procedimento:
-	PROCEDURE ID argumentos SEMICOMMA
+tipo:
+	tipo_primitivo
+	{printf(" variáveis %s\n",$1);}
+	|tipo_estruturado
+	{printf(" arrays %s\n",$1);}
 	;
-
-argumentos:
-	LPARENTESIS lista_identificadores COLON tipo RPARENTESIS
-	|
-	;
-
-
-/*definicao de comandos*/
-
-bloco:
-	BEGINN comando_bloco END
-	;
-
-comando_bloco:
-	lista_comandos
-	|
-	;
-
-lista_comandos:
-	comandos SEMICOMMA
-	| lista_comandos comandos
-	;
-
-comandos:
-	ID ATTR expressao
-	| ID LPARENTESIS expressao RPARENTESIS
-	| WHILE LPARENTESIS expressao RPARENTESIS DO comandos
-	| READ LPARENTESIS ID RPARENTESIS
-	| WRITE LPARENTESIS expressao RPARENTESIS
-	| IF expressao THEN comandos ELSE comandos /*%prec PRECELSE*/
-	| IF expressao THEN comandos
-	;
-
-
-/*definicao de expressao*/
-
-expressao:
-	expressao_aritmetica
-	| expressao EQ expressao_aritmetica
-	| expressao LT expressao_aritmetica
-	| expressao GT expressao_aritmetica
-	| expressao NE expressao_aritmetica
-	| expressao GE expressao_aritmetica
-	| expressao LE expressao_aritmetica
-	;
-
-expressao_aritmetica:
-	termo
-	| expressao_aritmetica ADD termo
-	| expressao_aritmetica SUB termo
-	| expressao_aritmetica OR termo
-	;
-
-termo:
-	fator
-	| termo MULT fator
-	| termo DIV fator
-	| termo MOD fator
-	| termo AND fator
-	;
-
-fator:
-	ID
-	| INTNUMBER
-	| REALNUMBER
-	| LPARENTESIS expressao RPARENTESIS
-	| NOT fator
-	| SUB fator
-	;
-
 %%
 
 void yyerror(char *s) {

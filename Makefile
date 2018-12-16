@@ -1,10 +1,11 @@
-all:	analisadorlexico
-
-analisadorlexico:	lex.yy.c tabelasimb.c
-	gcc -o analisadorlexico lex.yy.c tabelasimb.c -ll
-
-lex.yy.c:	lexico.l
+all: compilador
+compilador: y.tab.c lex.yy.c tabela.c tabela.h
+	cc lex.yy.c y.tab.c -o compilador
+y.tab.c: interpretador.y
+	yacc -d interpretador.y
+lex.yy.c: lexico.l
 	lex lexico.l
-
-clean: 
-	rm analisadorlexico
+clean:
+	rm compilador
+test: compilador entrada
+	./compilador < entrada
