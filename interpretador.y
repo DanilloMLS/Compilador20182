@@ -48,6 +48,7 @@ cabecalho:
 	{printf ("\n programa %s\n",$2);}
 	;
 
+//2ª parte: declarações
 declaracoes:
 	declaracoes declaracao// declaracao_subprogramas
 	|
@@ -58,12 +59,7 @@ declaracao:
 	|declaracoes_subprogramas
 	;
 
-declaracoes_subprogramas:
-	PROCEDURE
-	{printf("procedimento\n");}
-	;
-
-//2ª parte: declarações
+//declaração de variáveis (primitivas e estruturadas)
 declaracoes_variaveis:
 	VAR bloco_variaveis
 	{printf ("declaracao\n");}
@@ -79,13 +75,16 @@ lista_variaveis:
 	lista_identificadores COLON tipo SEMICOMMA
 	;
 
-dimensao:
-	LBRACKETS INTNUMBER DOT DOT INTNUMBER RBRACKETS
-	;
-
 lista_identificadores:
 	ID
 	| lista_identificadores COMMA ID
+	;
+
+tipo:
+	tipo_primitivo
+	{printf(" variáveis %s\n",$1);}
+	|tipo_estruturado
+	{printf(" arrays %s\n",$1);}
 	;
 
 tipo_primitivo:
@@ -100,12 +99,48 @@ tipo_estruturado:
 	{printf(" estruturado");}
 	;
 
-tipo:
-	tipo_primitivo
-	{printf(" variáveis %s\n",$1);}
-	|tipo_estruturado
-	{printf(" arrays %s\n",$1);}
+
+dimensao:
+	LBRACKETS INTNUMBER DOT DOT INTNUMBER RBRACKETS
 	;
+
+//declaração de um procedimento
+declaracoes_subprogramas:
+	cabecalho_procedimento variaveis_procedimento bloco SEMICOMMA
+	;
+
+cabecalho_procedimento:
+	PROCEDURE ID parametros SEMICOMMA
+	{printf("procedimento %s\n",$2);}
+	;
+
+//parâmetros de um procedimento
+parametros:
+	LPARENTESIS listas_parametros RPARENTESIS
+	|
+	;
+
+listas_parametros:
+	lista_parametro
+	|listas_parametros SEMICOMMA lista_parametro
+	;
+
+lista_parametro:
+	lista_identificadores COLON tipo_primitivo
+	;
+
+variaveis_procedimento:
+	VAR bloco_variaveis
+	{printf(" variável de procedimento ");}
+	|
+	;
+
+//3ª parte - blocos
+bloco:
+	BEGINN END
+
+;
+
 %%
 
 void yyerror(char *s) {
