@@ -39,7 +39,7 @@ pilha_contexto *pilha;
 
 //variavel inicial
 program:
-	cabecalho declaracoes// bloco DOT
+	cabecalho declaracoes bloco DOT
 	;
 
 //1ª parte: cabeçalho
@@ -50,7 +50,7 @@ cabecalho:
 
 //2ª parte: declarações
 declaracoes:
-	declaracoes declaracao// declaracao_subprogramas
+	declaracoes declaracao
 	|
 	;
 
@@ -63,7 +63,6 @@ declaracao:
 declaracoes_variaveis:
 	VAR bloco_variaveis
 	{printf ("declaracao\n");}
-	//|declaracoes_variaveis bloco_tipos
 	;
 
 bloco_variaveis:
@@ -137,9 +136,107 @@ variaveis_procedimento:
 
 //3ª parte - blocos
 bloco:
-	BEGINN END
+	BEGINN comandos END
+	{printf(" bloco\n");}
+	|
+	;
 
-;
+comandos:
+	comando SEMICOMMA
+	|comandos comando SEMICOMMA
+	;
+
+comando:
+	atribuicao
+	|chamada_procedimento
+	|leitura //read
+	|repeticao //while
+	|escrita //write
+	|condicao //if then else
+	;
+
+atribuicao:
+	variavel ATTR expressao
+	;
+
+chamada_procedimento:
+	ID LPARENTESIS lista_identificadores RPARENTESIS
+	;
+
+leitura:
+	READ LPARENTESIS variavel RPARENTESIS
+	{printf(" leitura de %s ",$3);}
+	;
+
+expressao:
+	expressao_simples
+	|expressao relop expressao_simples
+	;
+
+relop:
+	EQ
+	|NE
+	|LT
+	|LE
+	|GE
+	|GT
+	;
+
+expressao_simples:
+	termo
+	|expressao_simples addop termo
+	|
+	;
+
+addop:
+	ADD
+	|SUB
+	|OR
+	;
+
+termo:
+	fator
+	|termo multop fator
+	;
+
+multop:
+	MULT
+	|DIV
+	|AND
+	;
+
+fator:
+	variavel
+	|INTNUMBER
+	|REALNUMBER
+	|LPARENTESIS expressao RPARENTESIS
+	|NOT fator
+	;
+
+variavel:
+	indexada
+	|ID
+	;
+
+indexada:
+	ID LBRACKETS INTNUMBER RBRACKETS
+	;
+
+repeticao:
+	WHILE expressao DO COLON bloco
+	;
+
+escrita:
+	WRITE expressao
+	{printf("write");}
+	;
+
+condicao:
+	IF expressao THEN bloco ELSE bloco
+	{printf("if them else");}
+	|IF expressao THEN bloco
+	{printf("if then");}
+	;
 
 %%
 
