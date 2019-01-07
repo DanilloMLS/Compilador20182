@@ -1,7 +1,8 @@
 program teste;
 var
 	p:array[1..20] of integer;
-	a,b:integer;
+	a:integer;
+	b:integer;
 	c,d:real;
 	x:integer;
 	z: array[1..5] of integer;
@@ -49,4 +50,5 @@ begin
 	begin
 		a:=1;
 	end;
+	p:=1;
 end.

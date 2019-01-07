@@ -30,6 +30,18 @@ simbolo * localizar_simbolo (tabela *contexto, char *lexema){
 	return NULL;
 }
 
+simbolo * localizar_simbolo_no_contexto_atual (tabela *contexto, char *lexema){
+	if(contexto != NULL){
+		no_tabela *temp = contexto->primeiro;
+		while(temp != NULL) {
+			if(strcmp(temp->dado->lexema, lexema) == 0) {
+				return temp->dado;
+			}
+		temp = temp->proximo;
+		}
+	}
+	return NULL;
+}
 
 simbolo *  criar_simbolo (char *lexema, int tipo) {
 	simbolo *novo = (simbolo *) malloc(sizeof(simbolo));
@@ -70,10 +82,10 @@ void imprimir_contexto(tabela *t) {
 	no_tabela * temp = t->primeiro;
 	printf("----------------------------------\n");
 	while(temp != NULL) {
-		if(temp->dado->tipo == INT) 
-			printf("\t INT: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);
+		if(temp->dado->tipo == INTNUMBER) 
+			printf("\t INTEGER: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);
 		else
-			printf("\t FLOAT: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);	
+			printf("\t REAL: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);	
 		temp = temp->proximo;
 	}
 	printf("==================================\n");

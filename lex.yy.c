@@ -518,7 +518,7 @@ char *yytext;
 #include "tabela.h"
 #include "y.tab.h"
 
-tabela tab;
+extern tabela *tab;
 #line 523 "lex.yy.c"
 #line 524 "lex.yy.c"
 
@@ -2041,7 +2041,7 @@ void yyfree (void * ptr )
 #line 73 "lexico.l"
 
 
-int yywrap() {
+int yywrap(void) {
 	return 1;
 }
 

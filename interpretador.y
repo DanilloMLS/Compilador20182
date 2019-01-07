@@ -4,10 +4,13 @@
 #endif
 #include <stdio.h>
 #include "tabela.h"
+#include "tabela.c"
 #include "arvore.h"
 int yylex(void);
 void yyerror(char *);
 pilha_contexto *pilha;
+char* cod_ids[20];
+int count_ids;
 %}
 
 %token INTNUMBER REALNUMBER ID
@@ -61,8 +64,9 @@ declaracao:
 
 //declaração de variáveis (primitivas e estruturadas)
 declaracoes_variaveis:
-	VAR bloco_variaveis
-	{printf ("declaracao\n");}
+	VAR
+	{printf ("declaracao - VAR\n");}
+	bloco_variaveis
 	;
 
 bloco_variaveis:
@@ -81,21 +85,18 @@ lista_identificadores:
 
 tipo:
 	tipo_primitivo
-	{printf(" variáveis %s\n",$1);}
+	//{printf(" primitivos %s\n",$1);}
 	|tipo_estruturado
-	{printf(" arrays %s\n",$1);}
+	//{printf(" arrays %s\n",$1);}
 	;
 
 tipo_primitivo:
 	INTEGER
-	{printf(" inteiro");}
 	|REAL
-	{printf(" real");}
 	;
 
 tipo_estruturado:
 	ARRAY dimensao OF tipo_primitivo
-	{printf(" estruturado");}
 	;
 
 
@@ -109,8 +110,9 @@ declaracoes_subprogramas:
 	;
 
 cabecalho_procedimento:
-	PROCEDURE ID parametros SEMICOMMA
-	{printf("procedimento %s\n",$2);}
+	PROCEDURE ID
+	{printf("procedimento %s\n",$2);}	
+	parametros SEMICOMMA
 	;
 
 //parâmetros de um procedimento
@@ -129,15 +131,17 @@ lista_parametro:
 	;
 
 variaveis_procedimento:
-	VAR bloco_variaveis
-	{printf(" variável de procedimento ");}
+	VAR
+	{printf(" variáveis de procedimento\n");}
+	bloco_variaveis
 	|
 	;
 
 //3ª parte - blocos
 bloco:
-	BEGINN comandos END
-	{printf(" bloco\n");}
+	BEGINN
+	{printf("bloco\n");}
+	comandos END
 	|
 	;
 
@@ -228,14 +232,14 @@ repeticao:
 
 escrita:
 	WRITE expressao
-	{printf("write");}
+	{printf("write\n");}
 	;
 
 condicao:
 	IF expressao THEN bloco ELSE bloco
-	{printf("if them else");}
+	{printf("if them else\n");}
 	|IF expressao THEN bloco
-	{printf("if then");}
+	{printf("if then\n");}
 	;
 
 %%

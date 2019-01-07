@@ -6,7 +6,7 @@
 #include "tabela.h"
 #include "y.tab.h"
 
-tabela tab;
+extern tabela *tab;
 %}
 
 delim		[ \t\n]
@@ -72,7 +72,7 @@ write		return WRITE;
 
 %%
 
-int yywrap() {
+int yywrap(void) {
 	return 1;
 }
 
