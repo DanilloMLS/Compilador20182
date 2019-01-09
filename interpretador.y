@@ -206,6 +206,7 @@ termo:
 multop:
 	MULT
 	|DIV
+	|MOD
 	|AND
 	;
 
