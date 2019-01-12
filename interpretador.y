@@ -9,7 +9,7 @@
 int yylex(void);
 void yyerror(char *);
 pilha_contexto *pilha;
-char* cod_ids[20];
+char* cod_ids[100];
 int count_ids;
 %}
 
@@ -65,7 +65,7 @@ declaracao:
 //declaração de variáveis (primitivas e estruturadas)
 declaracoes_variaveis:
 	VAR
-	{printf ("declaracao - VAR\n");}
+	//{printf ("declaracao - VAR\n");}
 	bloco_variaveis
 	;
 
@@ -75,12 +75,35 @@ bloco_variaveis:
 	;	
 
 lista_variaveis:
+	//não funciona
 	lista_identificadores COLON tipo SEMICOMMA
+	{
+		for(int i = 0; i < count_ids; i++){
+			simbolo* s = localizar_simbolo_no_contexto_atual (topo_pilha(pilha),cod_ids[i]);
+			if(s == NULL && topo_pilha(pilha) != NULL){
+				s = addTypeID(cod_ids[i], $3);
+				inserir_simbolo(topo_pilha(pilha), s);
+			}else{
+				yyerror("Identificador já foi declarado nesse escopo");
+			}
+		}
+		count_ids = 0;
+	}
 	;
 
 lista_identificadores:
 	ID
+	{
+		printf("entrou identf sozinho %s \n",$1);
+		cod_ids[count_ids] = (char*)$1;
+		count_ids++; 
+	}
 	| lista_identificadores COMMA ID
+	{
+		printf("entrou lista de identf %s \n",$3);
+		cod_ids[count_ids] = (char*)$3;
+		count_ids++; 
+	}
 	;
 
 tipo:
@@ -132,16 +155,24 @@ lista_parametro:
 
 variaveis_procedimento:
 	VAR
-	{printf(" variáveis de procedimento\n");}
+	//{printf(" variáveis de procedimento\n");}
 	bloco_variaveis
 	|
 	;
 
 //3ª parte - blocos
 bloco:
+	{
+		tabela * contexto = criar_contexto(topo_pilha(pilha));
+		pilha = empilhar_contexto(pilha, contexto);
+	}
 	BEGINN
 	{printf("bloco\n");}
 	comandos END
+	{
+		imprimir_contexto(topo_pilha(pilha));
+		desempilhar_contexto(&pilha);
+	}
 	|
 	;
 
@@ -169,7 +200,7 @@ chamada_procedimento:
 
 leitura:
 	READ LPARENTESIS variavel RPARENTESIS
-	{printf(" leitura de %s ",$3);}
+	//{printf(" leitura de %s ",$3);}
 	;
 
 expressao:
@@ -233,20 +264,35 @@ repeticao:
 
 escrita:
 	WRITE expressao
-	{printf("write\n");}
+	//{printf("write\n");}
 	;
 
 condicao:
 	IF expressao THEN bloco ELSE bloco
-	{printf("if them else\n");}
+	//{printf("if them else\n");}
 	|IF expressao THEN bloco
-	{printf("if then\n");}
+	//{printf("if then\n");}
 	;
 
 %%
 
 void yyerror(char *s) {
 	fprintf(stderr, "%s\n", s);
+}
+
+simbolo* addTypeID(char* lexema, int type){
+	simbolo* s = criar_simbolo(lexema, type);
+	return s;
+}
+
+void setTipoExp(no_arvore *n, no_arvore* expr1, no_arvore* expr2){
+    
+   if(expr1->dado.expr->tipo == REALNUMBER || expr2->dado.expr->tipo == REALNUMBER)
+        n->dado.expr->tipo = REALNUMBER;
+   else
+        n->dado.expr->tipo = INTNUMBER; 
+    
+   //printf("tipo da expressão--%d ", n->dado.expr->tipo);
 }
 
 int main(void) {
