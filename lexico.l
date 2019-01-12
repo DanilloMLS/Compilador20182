@@ -3,8 +3,10 @@
 #define YYSTYPE long int
 #endif
 #include <stdio.h>
+void yyerror(char *);
 #include "tabela.h"
 #include "y.tab.h"
+#include "tabNumero.h"
 
 extern tabela *tab;
 %}
@@ -13,37 +15,34 @@ delim		[ \t\n]
 ws		{delim}+
 letra		[a-zA-Z_]
 digito		[0-9]
-numeroInteiro 	[0-9]+
+numeroInteiro 	{digito}+
 id		{letra}({letra}|{digito})*
-numeroReal	{digito}+(\.{digito}+)?(E[+-]?{digito}+)?
+numeroReal	{digito}+"."{digito}+
 
 %%
 
 {ws}		{}
 
-{numeroInteiro}	yylval = atoi(yytext); return INTNUMBER;
-{numeroReal}	yylval = atof(yytext); return REALNUMBER;
+{numeroInteiro}	{valor v;
+		v.fval = atof(yytext);
+		yylval = (long long) criar_numero(v, TIPOREAL);
+		return NUMBER;}
+
+{numeroReal}	{valor v;
+		v.ival = atoi(yytext);
+		yylval = (long long) criar_numero(v, TIPOINT);
+		return NUMBER;}
+
 ":="		return ATTR;
+"["		return *yytext;
+"]"		return *yytext;
 "<="		return LE;
-"<"		return LT;
-"="		return EQ;
-"<>"		return NE;
 ">="		return GE;
+"<>"		return NE;
+"<"		return LT;
 ">"		return GT;
-"+"		return ADD;
-"-"		return SUB;
-"*"		return MULT;
-"/"		return DIV;
-","		return COMMA;
-"."		return DOT;
-":"		return COLON;
-";"		return SEMICOMMA;
-"["		return LBRACKETS;
-"]"		return RBRACKETS;
-"("		return LPARENTESIS;
-")"		return RPARENTESIS;
-"{"		return LCOMMENT;
-"}"		return RCOMMENT;
+"="		return EQ;
+
 
 and		return AND;
 array		return ARRAY;
@@ -66,9 +65,14 @@ real		return REAL;
 var		return VAR;
 while		return WHILE;
 write		return WRITE;
+true		{yyval = 0; return TRUE;}
+false		{yyval = 1; return FALSE;}
 
-{id}		yylval = (long int) strdup(yytext); return ID;
+[-+*;,.:(/)]	return *yytext;
 
+{id}		{yylval = (long int) strdup(yytext);
+		return ID;}
+. 		yyerror("invalid character");
 
 %%
 
