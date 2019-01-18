@@ -82,7 +82,7 @@ void imprimir_contexto(tabela *t) {
 	no_tabela * temp = t->primeiro;
 	printf("----------------------------------\n");
 	while(temp != NULL) {
-		if(temp->dado->tipo == INTNUMBER) 
+		if(temp->dado->tipo == TIPOINT) 
 			printf("\t INTEGER: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);
 		else
 			printf("\t REAL: %s (%d)\n", temp->dado->lexema, temp->dado->val.dval);	

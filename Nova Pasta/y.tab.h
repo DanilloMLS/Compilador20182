@@ -45,89 +45,75 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    ATTR = 258,
-    LE = 259,
-    GE = 260,
-    NE = 261,
-    LT = 262,
-    GT = 263,
-    EQ = 264,
-    AND = 265,
-    ARRAY = 266,
-    BEGINN = 267,
-    BOOLEAN = 268,
-    DO = 269,
-    IF = 270,
-    THEN = 271,
-    ELSE = 272,
-    END = 273,
-    INTEGER = 274,
-    NOT = 275,
-    OF = 276,
-    OR = 277,
-    PROCEDURE = 278,
-    PROGRAM = 279,
-    READ = 280,
-    REAL = 281,
-    VAR = 282,
-    FOR = 283,
-    WRITE = 284,
-    TRUE = 285,
-    FALSE = 286,
-    NUMBER = 287,
-    ID = 288,
-    TYPE = 289,
-    TO = 290,
-    ADD = 291,
-    SUB = 292,
-    MULT = 293,
-    DIVV = 294,
-    MOD = 295,
-    UMINUS = 296,
-    NO_ELSE = 297
+    NUMBER = 258,
+    ATTR = 259,
+    LE = 260,
+    GE = 261,
+    NE = 262,
+    LT = 263,
+    GT = 264,
+    EQ = 265,
+    AND = 266,
+    ARRAY = 267,
+    BEGINN = 268,
+    DIV = 269,
+    DO = 270,
+    ID = 271,
+    IF = 272,
+    THEN = 273,
+    ELSE = 274,
+    END = 275,
+    EXPR = 276,
+    MOD = 277,
+    NOT = 278,
+    OF = 279,
+    OR = 280,
+    PROCEDURE = 281,
+    PROGRAM = 282,
+    READ = 283,
+    VAR = 284,
+    TIPOBOOL = 285,
+    TIPOINT = 286,
+    TIPOREAL = 287,
+    TIPO = 288,
+    WHILE = 289,
+    WRITE = 290
   };
 #endif
 /* Tokens.  */
-#define ATTR 258
-#define LE 259
-#define GE 260
-#define NE 261
-#define LT 262
-#define GT 263
-#define EQ 264
-#define AND 265
-#define ARRAY 266
-#define BEGINN 267
-#define BOOLEAN 268
-#define DO 269
-#define IF 270
-#define THEN 271
-#define ELSE 272
-#define END 273
-#define INTEGER 274
-#define NOT 275
-#define OF 276
-#define OR 277
-#define PROCEDURE 278
-#define PROGRAM 279
-#define READ 280
-#define REAL 281
-#define VAR 282
-#define FOR 283
-#define WRITE 284
-#define TRUE 285
-#define FALSE 286
-#define NUMBER 287
-#define ID 288
-#define TYPE 289
-#define TO 290
-#define ADD 291
-#define SUB 292
-#define MULT 293
-#define DIVV 294
-#define MOD 295
-#define UMINUS 296
-#define NO_ELSE 297
+#define NUMBER 258
+#define ATTR 259
+#define LE 260
+#define GE 261
+#define NE 262
+#define LT 263
+#define GT 264
+#define EQ 265
+#define AND 266
+#define ARRAY 267
+#define BEGINN 268
+#define DIV 269
+#define DO 270
+#define ID 271
+#define IF 272
+#define THEN 273
+#define ELSE 274
+#define END 275
+#define EXPR 276
+#define MOD 277
+#define NOT 278
+#define OF 279
+#define OR 280
+#define PROCEDURE 281
+#define PROGRAM 282
+#define READ 283
+#define VAR 284
+#define TIPOBOOL 285
+#define TIPOINT 286
+#define TIPOREAL 287
+#define TIPO 288
+#define WHILE 289
+#define WRITE 290
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

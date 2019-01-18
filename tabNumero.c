@@ -1,5 +1,6 @@
 #include <stdlib.h>
-#include "tabelaNumero.h"
+#include <stdio.h>
+#include "tabNumero.h"
 
 numero *  criar_numero (valor val, int tipo) {
 	numero *novo = (numero *) malloc(sizeof(numero));
