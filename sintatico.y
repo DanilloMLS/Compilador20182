@@ -247,7 +247,8 @@ expressao:
 		if(s == NULL)
 			yyerror("Identificador não declarado");
 		else  {
-			no_arvore *n = criar_no_expressao(ID, s, NULL);
+			no_arvore *n = criar_no_expressao(ID, (simbolo*)$1, NULL);
+			n->dado.expr->tipo = s->tipo;
 			$$ = (long int) n;
 		}
 	}

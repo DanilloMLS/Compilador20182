@@ -12,10 +12,8 @@ begin a:=6+6-5; end;
 
 begin
 a:=b;
-b:=5-9+6*8;
-c:=5*9/8;
-d:=a % b;
-a:=-(2+2)+b;
+b:=5-9;
+
 
 write(a);
 read(b);

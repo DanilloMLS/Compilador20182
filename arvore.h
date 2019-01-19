@@ -86,4 +86,7 @@ no_arvore * criar_no_read(simbolo* id);
 t_ifelse * criar_ifelse(void* expbool_if, void* bloco_if, void* bloco_else);
 no_arvore * criar_no_ifelse(void* expbool_if, void* bloco_if, void* bloco_else);
 
+no_arvore * criar_no_for(void* attrfor, numero* limite, void* bloco);
+t_for * criar_for(void* attrfor, numero* limite, void* bloco);
+
 #endif

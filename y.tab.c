@@ -538,7 +538,7 @@ static const yytype_uint16 yyrline[] =
        0,    53,    53,    58,    62,    63,    64,    68,    72,    73,
       74,    78,    94,    98,   103,   111,   115,   119,   120,   124,
      125,   126,   131,   135,   135,   155,   155,   175,   175,   194,
-     199,   203,   204,   205,   206,   211,   224,   238,   245,   255,
+     199,   203,   204,   205,   206,   211,   224,   237,   244,   255,
      265,   275,   285,   291,   301,   303,   312,   317,   325,   333,
      346,   347,   348,   349,   355,   361,   367,   373,   379,   385,
      391,   397
@@ -1556,7 +1556,6 @@ yyreduce:
   case 36:
 #line 225 "sintatico.y" /* yacc.c:1646  */
     {
-		//printf("asddsaasddsaasdsa");
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-3]));
 		if(s == NULL)
 			yyerror("Identificador não declarado");
@@ -1565,28 +1564,29 @@ yyreduce:
 			(yyval) = (long int) n;
 		}
 	}
-#line 1569 "y.tab.c" /* yacc.c:1646  */
+#line 1568 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 239 "sintatico.y" /* yacc.c:1646  */
+#line 238 "sintatico.y" /* yacc.c:1646  */
     {
 		numero *num = (numero*)(yyvsp[0]);
 		no_arvore *n = criar_no_expressao(NUMBER, (void *) (yyvsp[0]), NULL);
 		n->dado.expr->tipo = num->tipo;
 		(yyval) = (long int) n;
 	}
-#line 1580 "y.tab.c" /* yacc.c:1646  */
+#line 1579 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 246 "sintatico.y" /* yacc.c:1646  */
+#line 245 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[0]));
 		if(s == NULL)
 			yyerror("Identificador não declarado");
 		else  {
-			no_arvore *n = criar_no_expressao(ID, s, NULL);
+			no_arvore *n = criar_no_expressao(ID, (simbolo*)(yyvsp[0]), NULL);
+			n->dado.expr->tipo = s->tipo;
 			(yyval) = (long int) n;
 		}
 	}
