@@ -23,6 +23,7 @@ read(b);
 if(not b)then:
 	begin
 		a:=1;
+		b:=2;
 	end;
 
 if(a + b > d)then:

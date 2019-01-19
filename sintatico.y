@@ -35,7 +35,7 @@ main(){
 %token		NUMBER ID TYPE TO
 %token		ADD SUB MULT DIVV MOD
 
-%token BLOCK EXPR STMTS
+%token BLOCK EXPR STMTS IFELSE
 
 %left ADD SUB
 %left MOD DIVV MULT
@@ -51,6 +51,7 @@ main(){
 
 programa:
 	cabecalho blocoprincipal'.'
+	{imprimir_arvore((no_arvore*)$2);}
 	;
 
 cabecalho:
@@ -142,7 +143,8 @@ blocoproc:
 	{
 		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
 			imprimir_contexto(topo_pilha(pilha));
-		    	desempilhar_contexto(&pilha);}
+		    	//desempilhar_contexto(&pilha);
+		}
 		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
 		//no_arvore* p = ((no_arvore*)$4);
 		$$ = (long int)n;
@@ -161,7 +163,8 @@ blocoprincipal:
 	{
 		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
 			imprimir_contexto(topo_pilha(pilha));
-		    	desempilhar_contexto(&pilha);}
+		    	//desempilhar_contexto(&pilha);
+		}
 		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
 		//no_arvore* p = ((no_arvore*)$4);
 		$$ = (long int)n;
@@ -180,7 +183,8 @@ bloco:
 	{
 		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
 			imprimir_contexto(topo_pilha(pilha));
-		    	desempilhar_contexto(&pilha);}
+		    	//desempilhar_contexto(&pilha);
+		}
 		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
 		$$ = (long int)n;
 	}
@@ -207,42 +211,134 @@ comando:
 	|READ'('ID')'';'
 	{
 		simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), (char*) $3);
-		if(s != NULL){
-			no_arvore *n = criar_no_read($3);
-			$$ = (long int)n;
+		if(s == NULL){
+			yyerror("Identificador não declarado");
 		}else{
-			yyerror("Identificador nao encontrado");
+			no_arvore *n = criar_no_read(s);
+			$$ = (long int)n;
 		}
 	}
 	;
 
 atribuicao:
 	ID ATTR expressao';'
+	{
+		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) $1);
+		if(s == NULL)
+			yyerror("Identificador não declarado");
+		else  {
+			no_arvore *n = criar_no_atribuicao((simbolo*) $1, (void *) $3);
+			$$ = (long int) n;
+		}
+	}
 	;
 
 expressao:
 	NUMBER
+	{
+		numero *num = (numero*)$1;
+		no_arvore *n = criar_no_expressao(NUMBER, (void *) $1, NULL);
+		n->dado.expr->tipo = num->tipo;
+		$$ = (long int) n;
+	}
 	|ID
+	{
+		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) $1);
+		if(s == NULL)
+			yyerror("Identificador não declarado");
+		else  {
+			no_arvore *n = criar_no_expressao(ID, s, NULL);
+			$$ = (long int) n;
+		}
+	}
 	|expressao ADD expressao
+	{
+		no_arvore *n = criar_no_expressao(ADD, (void *) $1, (void *) $3); 
+		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
+			n->dado.expr->tipo = REAL;
+		}else{
+			n->dado.expr->tipo = INTEGER;
+		}
+		$$ = (long int) n;
+	}
 	|expressao SUB expressao
+	{
+		no_arvore *n = criar_no_expressao(SUB, (void *) $1, (void *) $3); 
+		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
+			n->dado.expr->tipo = REAL;
+		}else{
+			n->dado.expr->tipo = INTEGER;
+		}
+		$$ = (long int) n;
+	}
 	|expressao MULT expressao
+	{
+		no_arvore *n = criar_no_expressao(SUB, (void *) $1, (void *) $3); 
+		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
+			n->dado.expr->tipo = REAL;
+		}else{
+			n->dado.expr->tipo = INTEGER;
+		}
+		$$ = (long int) n;
+	}
 	|expressao DIVV expressao
+	{
+		no_arvore *n = criar_no_expressao(DIVV, (void *) $1, (void *) $3); 
+		n->dado.expr->tipo = REAL;
+		$$ = (long int) n;
+	}
 	|expressao MOD expressao
+	{
+		no_arvore *n = criar_no_expressao(SUB, (void *) $1, (void *) $3); 
+		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
+			n->dado.expr->tipo = REAL;
+		}else{
+			n->dado.expr->tipo = INTEGER;
+		}
+		$$ = (long int) n;
+	}
 	|'('expressao')'
+	{$$ = $2;}
 	|SUB expressao %prec UMINUS
+	{
+		no_arvore *n = criar_no_expressao(UMINUS, NULL, (void *) $2); 
+		n->dado.expr->tipo = ((no_arvore*)$2)->dado.expr->tipo;
+		$$ = (long int) n;
+	}
 	;
 
 condicao:
 	IF '('expressaobool')' THEN ':' bloco ';' %prec NO_ELSE
+	{
+		no_arvore *n = criar_no_ifelse((void*)$3, (void*)$7, NULL);
+		$$ = (long int) n;
+	}
 	|IF '('expressaobool')' THEN ':' bloco ELSE bloco ';'
+	{
+		no_arvore *n = criar_no_ifelse((void*)$3, (void*)$7, (void*)$9);
+		$$ = (long int) n;
+	}
 	;
 
 repeticao:
 	FOR atribuicaofor TO NUMBER DO ':' bloco ';'
+	{
+		no_arvore *n = criar_no_for((void*)$2,(numero*)$4,(void*)$7);
+		$$ = (long int) n;
+	}
 	;
 
 atribuicaofor:
 	ID ATTR expressao
+	{
+		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) $1);
+		if(s == NULL)
+			yyerror("Identificador não declarado");
+		else  {
+			no_arvore *n = criar_no_atribuicao(s, (void *) $3);
+			$$ = (long int) n;
+		}
+	}
 	;
 
 expressaobool:
@@ -250,12 +346,57 @@ expressaobool:
 	|FALSE
 	|BOOLEAN
 	|expressao AND expressao
+	{
+		no_arvore *n = criar_no_expressao(AND, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao OR expressao
+	{
+		no_arvore *n = criar_no_expressao(OR, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|NOT expressao
+	{
+		no_arvore *n = criar_no_expressao(NOT, NULL, (void *)$2); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao LT expressao
+	{
+		no_arvore *n = criar_no_expressao(LT, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao LE expressao
+	{
+		no_arvore *n = criar_no_expressao(LE, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao GT expressao
+	{
+		no_arvore *n = criar_no_expressao(GT, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao GE expressao
+	{
+		no_arvore *n = criar_no_expressao(GE, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao EQ expressao
+	{
+		no_arvore *n = criar_no_expressao(EQ, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	|expressao NE expressao
+	{
+		no_arvore *n = criar_no_expressao(NE, (void*)$1, (void *)$3); 
+		n->dado.expr->tipo = BOOLEAN;
+		$$ = (long int) n;
+	}
 	;

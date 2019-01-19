@@ -20,18 +20,33 @@ typedef struct t_attr {
 } t_attr;
 
 typedef struct t_bloco {
-    void *stmts;
+	void *stmts;
 }t_bloco;
 
 typedef struct t_stmts {
-    struct no_arvore* stmt;
-    void *stmts;
+	struct no_arvore* stmt;
+	void *stmts;
 } t_stmts;
 
 typedef struct t_write {
-    void *expressao;
+	void *expressao;
 }t_write;
 
+typedef struct t_read {
+	simbolo *id;
+}t_read;
+
+typedef struct t_ifelse {
+	void *expbool_if;
+	void *bloco_if;
+	void *bloco_else;
+}t_ifelse;
+
+typedef struct t_for{
+	void* attrfor;
+	numero* limite;
+	void* bloco;
+}t_for;
 //Simula a superclasse abstrata 
 typedef union valor_sintatico {
 	t_expr *expr;
@@ -39,6 +54,9 @@ typedef union valor_sintatico {
 	t_bloco *bloco;
 	t_stmts *stmts;
 	t_write *write;
+	t_read *read;
+	t_ifelse *ifelse;
+	t_for *forr;
 } valor_sintatico;
 
 typedef struct no_arvore {
@@ -61,5 +79,11 @@ no_arvore * criar_no_stmts(void *stmts, no_arvore* stmt);
 
 t_write * criar_writeln(void *expressao);
 no_arvore * criar_no_write(void *expressao);
+
+t_read * criar_read(simbolo* id);
+no_arvore * criar_no_read(simbolo* id);
+
+t_ifelse * criar_ifelse(void* expbool_if, void* bloco_if, void* bloco_else);
+no_arvore * criar_no_ifelse(void* expbool_if, void* bloco_if, void* bloco_else);
 
 #endif

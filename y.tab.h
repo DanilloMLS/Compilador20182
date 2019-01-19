@@ -86,8 +86,9 @@ extern int yydebug;
     BLOCK = 296,
     EXPR = 297,
     STMTS = 298,
-    UMINUS = 299,
-    NO_ELSE = 300
+    IFELSE = 299,
+    UMINUS = 300,
+    NO_ELSE = 301
   };
 #endif
 /* Tokens.  */
@@ -132,8 +133,9 @@ extern int yydebug;
 #define BLOCK 296
 #define EXPR 297
 #define STMTS 298
-#define UMINUS 299
-#define NO_ELSE 300
+#define IFELSE 299
+#define UMINUS 300
+#define NO_ELSE 301
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
