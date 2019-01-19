@@ -83,8 +83,11 @@ extern int yydebug;
     MULT = 293,
     DIVV = 294,
     MOD = 295,
-    UMINUS = 296,
-    NO_ELSE = 297
+    BLOCK = 296,
+    EXPR = 297,
+    STMTS = 298,
+    UMINUS = 299,
+    NO_ELSE = 300
   };
 #endif
 /* Tokens.  */
@@ -126,8 +129,11 @@ extern int yydebug;
 #define MULT 293
 #define DIVV 294
 #define MOD 295
-#define UMINUS 296
-#define NO_ELSE 297
+#define BLOCK 296
+#define EXPR 297
+#define STMTS 298
+#define UMINUS 299
+#define NO_ELSE 300
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

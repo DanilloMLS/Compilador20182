@@ -4,8 +4,12 @@
 #endif
 #include <stdio.h>
 #include "y.tab.h"
+#include "tabela.h"
 #include "tabNumero.h"
 #include "tabNumero.c"
+
+void yyerror(char *);
+extern tabela *tab;
 %}
 
 delim		[ \t\n]
@@ -63,20 +67,23 @@ to		{return TO;}
 true		{yylval = 1;return TRUE;}
 false		{yylval = 0;return FALSE;}
 
-{numeroInteiro}	{
-		valor v;
+{numeroInteiro}	{valorNum v;
 		v.ival = atoi(yytext);
 		yylval = (long int) criar_numero(v, INTEGER);
 		return NUMBER;}
-{numeroReal}	{valor v;
+{numeroReal}	{valorNum v;
 		v.fval = atof(yytext);
 		yylval = (long int) criar_numero(v, REAL);
 		return NUMBER;}
 {id}		{yylval = (long int) strdup(yytext);
 		return ID;}
 
+
 %%
 
+int yywrap(){
+	return 1;
+}
 /*lex example4.l
 yacc -d example4.y
 cc lex.yy.c y.tab.c -o example4

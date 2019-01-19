@@ -19,14 +19,30 @@ typedef struct t_attr {
 	void *expressao;
 } t_attr;
 
+typedef struct t_bloco {
+    void *stmts;
+}t_bloco;
+
+typedef struct t_stmts {
+    struct no_arvore* stmt;
+    void *stmts;
+} t_stmts;
+
+typedef struct t_write {
+    void *expressao;
+}t_write;
+
 //Simula a superclasse abstrata 
 typedef union valor_sintatico {
 	t_expr *expr;
 	t_attr *attr;
+	t_bloco *bloco;
+	t_stmts *stmts;
+	t_write *write;
 } valor_sintatico;
 
 typedef struct no_arvore {
-	int tipoSintatico; //expr, attr, stmt, ...
+	int tipo; //expr, attr, stmt, ...
 	valor_sintatico dado;
 	//ponteiro para tabela de símbolos
 } no_arvore;
@@ -37,5 +53,13 @@ t_expr * criar_expressao(int op, void *dir, void *esq);
 no_arvore * criar_no_atribuicao(simbolo *resultado, void *expressao);
 t_attr * criar_atribuicao(simbolo *resultado, void *expressao);
 
+t_bloco * criar_bloco(void *stmts);
+no_arvore * criar_no_bloco(void *stmts);
+
+t_stmts * criar_stmts(void *stmts, no_arvore* stmt);
+no_arvore * criar_no_stmts(void *stmts, no_arvore* stmt);
+
+t_write * criar_writeln(void *expressao);
+no_arvore * criar_no_write(void *expressao);
 
 #endif
