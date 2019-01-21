@@ -81,6 +81,7 @@ listavar://tabela
 			simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), cod_ids[i]);
 			if(s == NULL && topo_pilha(pilha) != NULL){
 				s = criar_simbolo(cod_ids[i], $3);
+				printf("simbolo %s",s->lexema);
 				inserir_simbolo(topo_pilha(pilha), s);
 			}else{
 				yyerror("O identificador já existe!");
@@ -178,7 +179,7 @@ bloco:
 		//imprimir_contexto(contexto);
 	}
 
-	BEGINN comandos END
+	declaracoes BEGINN comandos END
 
 	{
 		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
@@ -227,7 +228,7 @@ atribuicao:
 		if(s == NULL)
 			yyerror("Identificador não declarado");
 		else  {
-			no_arvore *n = criar_no_atribuicao((simbolo*) $1, (void *) $3);
+			no_arvore *n = criar_no_atribuicao(s, (void *) $3);
 			$$ = (long int) n;
 		}
 	}

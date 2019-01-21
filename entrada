@@ -1,36 +1,20 @@
 program teste;
-
 var
-a,b,c:integer;
-d:real;
-e,f:array[1..10] of integer;
-
-procedure kk(p,pp:real;ppp:integer);
-var
-r,rr,rrr:real;
-begin a:=6+6-5; end;
+	a:integer;
+	b:integer;
 
 begin
-a:=b;
-b:=5-9;
-
-
-write(a);
-read(b);
-
-if(not b)then:
+	read(a);
+	a:=1;
+	b:=a;
+	if (a>b) then:
+	var c:real;
 	begin
 		a:=1;
-		b:=2;
-	end;
-
-if(a + b > d)then:
+	end
+	else
+	var d:real;
 	begin
-		a:=1;
+		b:=1;
 	end;
-
-for b:=0 to 3 do:
-begin
-	a:=2;
-end;
 end.
