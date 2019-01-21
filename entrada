@@ -1,20 +1,18 @@
 program teste;
-var
-	a:integer;
-	b:integer;
 
-begin
-	read(a);
-	a:=1;
-	b:=a;
-	if (a>b) then:
-	var c:real;
-	begin
-		a:=1;
-	end
-	else
-	var d:real;
-	begin
-		b:=1;
-	end;
+var i, j: integer;
+k: real;
+
+begin 
+    i:=1+2-2;
+    read(k);
+    for i:=1 to 3 do:
+    begin
+        if(i > 2)then:
+        var j: integer;
+        begin
+            j:= 2+2;
+        end;
+    end;
+   
 end.

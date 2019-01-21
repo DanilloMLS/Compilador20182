@@ -4,7 +4,7 @@
 #endif
 #include <stdio.h>
 #include "tabela.h"
-#include "tabela.c"//eu não sei pq raios só funciona assim
+#include "tabela.c"
 #include "tabNumero.h"
 #include "arvore.h"
 #include "arvore.c"
@@ -50,7 +50,7 @@ main(){
 %%
 
 programa:
-	cabecalho blocoprincipal'.'
+	cabecalho bloco'.'
 	{imprimir_arvore((no_arvore*)$2);}
 	;
 
@@ -129,47 +129,7 @@ listaargs:
 
 corpoproc:
 	//bloco';'
-	blocoproc ';'
-	;
-
-blocoproc:
-	{	//coloca o contexto (o bloco) em uma pilha
-		tabela * contexto = criar_contexto(topo_pilha(pilha));
-		pilha = empilhar_contexto(pilha, contexto);
-		//imprimir_contexto(contexto);
-	}
-
-	declaracoes BEGINN comandos END
-
-	{
-		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
-			imprimir_contexto(topo_pilha(pilha));
-		    	//desempilhar_contexto(&pilha);
-		}
-		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
-		//no_arvore* p = ((no_arvore*)$4);
-		$$ = (long int)n;
-	}
-	;
-
-blocoprincipal:
-	{	//coloca o contexto (o bloco) em uma pilha
-		tabela * contexto = criar_contexto(topo_pilha(pilha));
-		pilha = empilhar_contexto(pilha, contexto);
-		//imprimir_contexto(contexto);
-	}
-
-	declaracoes BEGINN comandos END
-
-	{
-		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
-			imprimir_contexto(topo_pilha(pilha));
-		    	//desempilhar_contexto(&pilha);
-		}
-		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
-		//no_arvore* p = ((no_arvore*)$4);
-		$$ = (long int)n;
-	}
+	bloco ';'
 	;
 
 bloco:
@@ -183,8 +143,8 @@ bloco:
 
 	{
 		if(topo_pilha(pilha) != NULL) { //imprime o contexto e desempilha
-			imprimir_contexto(topo_pilha(pilha));
-		    	//desempilhar_contexto(&pilha);
+			//imprimir_contexto(topo_pilha(pilha));
+		    	desempilhar_contexto(&pilha);
 		}
 		no_arvore* n = criar_no_bloco((void*)$4);//cria um nó do tipo bloco na árvore
 		$$ = (long int)n;
@@ -198,6 +158,10 @@ comandos:
 		$$ = (long int)n;
 	}
 	|
+	{
+		no_arvore* n = criar_no_stmts(NULL, NULL);
+        	$$ = (long int)n;
+	}
 	;
 
 comando:
@@ -344,10 +308,7 @@ atribuicaofor:
 	;
 
 expressaobool:
-	TRUE
-	|FALSE
-	|BOOLEAN
-	|expressao AND expressao
+	expressao AND expressao
 	{
 		no_arvore *n = criar_no_expressao(AND, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
