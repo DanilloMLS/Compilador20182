@@ -125,17 +125,21 @@ no_arvore * criar_no_for(void* attrfor, numero* limite, void* bloco){
 
 void imprimir_arvore(no_arvore *no){
     if (no != NULL){
-
+	//printf("\n");
         switch (no->tipo){
             case BLOCK:
+		printf("BLOCO-------------------------------------\n");
                 imprimir_arvore(no->dado.stmts->stmt);
-                printf("Bloco\n"); 
+                printf("\nBloco\n");
+		printf("Fim do BLOCO------------------------------\n");
                 break;
             
             case STMTS:           
                 imprimir_arvore(no->dado.stmts->stmt);
-                imprimir_arvore((no_arvore*)no->dado.stmts->stmts);           
-                printf("Stmts\n"); 
+                imprimir_arvore((no_arvore*)no->dado.stmts->stmts);  
+		if(no->dado.stmts->stmts != NULL){
+			printf("Stmts "); 
+		}         
                 break;
             
             case ATTR:
@@ -148,8 +152,11 @@ void imprimir_arvore(no_arvore *no){
                     imprimir_arvore((no_arvore*)no->dado.expr->dir);
                     if(no->dado.expr->esq != NULL)
                         imprimir_arvore((no_arvore*)no->dado.expr->esq);
-                }
-                printf("EXPR\n");
+			printf("%d\n", no->dado.expr->op);
+                }else{
+			//printf("%s", no->dado.expr->op);
+		}
+                printf("EXPR: ");
                 break;
             
             case WRITE:
@@ -162,7 +169,7 @@ void imprimir_arvore(no_arvore *no){
                 break;           
             
 	    case IFELSE:
-                printf("++++++++++++++++++++++++++++++++++++++++++++++\n");                
+                printf("IFELSE----------------------------------------\n");                
                 
                 
                 imprimir_arvore((no_arvore*)no->dado.ifelse->bloco_if);
@@ -174,18 +181,18 @@ void imprimir_arvore(no_arvore *no){
                     printf("ELSE\n");
                 } 
                 
-                printf("++++++++++++++++++++++++++++++++++++++++++++++\n");
+                printf("Termino IFELSE--------------------------------\n");
                 break;
 
 	    case FOR:
-                printf("++++++++++++++++++++++++++++++++++++++++++++++\n");
+                printf("FOR-------------------------------------------\n");
 
                 imprimir_arvore((no_arvore*)no->dado.forr->bloco);
-                printf("limite máximo %d\n", no->dado.forr->limite->val.ival); 
+                printf("Número de iterações: %d\n", no->dado.forr->limite->val.ival); 
                 imprimir_arvore((no_arvore*)no->dado.forr->attrfor);
                 printf("FOR\n");
                 
-                printf("++++++++++++++++++++++++++++++++++++++++++++++\n");
+                printf("Termino FOR-----------------------------------\n");
                 break;
             
             default:

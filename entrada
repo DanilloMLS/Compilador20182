@@ -5,6 +5,7 @@ k: real;
 
 begin 
     i:=1+2-2;
+    write(i);
     read(k);
     for i:=1 to 3 do:
     begin

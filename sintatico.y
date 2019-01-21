@@ -81,7 +81,7 @@ listavar://tabela
 			simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), cod_ids[i]);
 			if(s == NULL && topo_pilha(pilha) != NULL){
 				s = criar_simbolo(cod_ids[i], $3);
-				printf("simbolo %s",s->lexema);
+				//printf("simbolo %s",s->lexema);
 				inserir_simbolo(topo_pilha(pilha), s);
 			}else{
 				yyerror("O identificador já existe!");
@@ -189,11 +189,16 @@ atribuicao:
 	ID ATTR expressao';'
 	{
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) $1);
+		no_arvore* expr = (no_arvore*)$3;
 		if(s == NULL)
 			yyerror("Identificador não declarado");
 		else  {
-			no_arvore *n = criar_no_atribuicao(s, (void *) $3);
-			$$ = (long int) n;
+			if((s->tipo != expr->dado.expr->tipo) && (s->tipo == INTEGER)){
+				yyerror("Tipos incompatíveis");
+			}else{
+				no_arvore *n = criar_no_atribuicao(s, (void *) $3);
+				$$ = (long int) n;
+			}
 		}
 	}
 	;
