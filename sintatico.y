@@ -8,6 +8,8 @@
 #include "tabNumero.h"
 #include "arvore.h"
 #include "arvore.c"
+#include "codigo_intermediario.h"
+#include "codigo_intermediario.c"
 
 pilha_contexto *pilha;
 char* cod_ids[100];
@@ -35,7 +37,7 @@ main(){
 %token		NUMBER ID TYPE TO
 %token		ADD SUB MULT DIVV MOD
 
-%token BLOCK EXPR STMTS IFELSE
+%token BLOCK EXPR STMTS IFELSE CHAMADA
 
 %left ADD SUB
 %left MOD DIVV MULT
@@ -109,11 +111,21 @@ listaids://tabela
 	;
 
 declprocedimentos:
-	cabecalhoproc corpoproc
-	;
-
-cabecalhoproc:
-	PROCEDURE ID argumentos';'
+	
+	PROCEDURE ID argumentos ';' bloco ';'
+	{
+		simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), (char*)$2);
+		if(s == NULL && topo_pilha(pilha) != NULL){
+			s = criar_simbolo((char*)$2, 0);
+			//printf("simbolo %s",s->lexema);
+			inserir_simbolo(topo_pilha(pilha), s);
+			no_arvore* n = criar_no_procedure((simbolo*)s, (void*)$3, (void*)$5);
+			$$ = (long int)n;
+			imprimir_arvore((no_arvore*)$5);
+		}else{
+			yyerror("O identificador já existe!");
+		}
+	}
 	;
 
 argumentos:
@@ -125,11 +137,6 @@ listaargs:
 	listaargs ';' listavar
 	|listavar
 	|
-	;
-
-corpoproc:
-	//bloco';'
-	bloco ';'
 	;
 
 bloco:
@@ -166,8 +173,11 @@ comandos:
 
 comando:
 	atribuicao
+	{gerar_codigo((no_arvore *) $1);}
 	|condicao
+	//{gerar_codigo((no_arvore *) $1);}
 	|repeticao
+	|chamadafuncao
 	|WRITE'('expressao')'';'
 	{
 		no_arvore *n = criar_no_write((void*)$3);
@@ -243,8 +253,8 @@ expressao:
 		$$ = (long int) n;
 	}
 	|expressao MULT expressao
-	{
-		no_arvore *n = criar_no_expressao(SUB, (void *) $1, (void *) $3); 
+	{	printf("multip");
+		no_arvore *n = criar_no_expressao(MULT, (void *) $1, (void *) $3); 
 		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
 			n->dado.expr->tipo = REAL;
 		}else{
@@ -260,12 +270,8 @@ expressao:
 	}
 	|expressao MOD expressao
 	{
-		no_arvore *n = criar_no_expressao(SUB, (void *) $1, (void *) $3); 
-		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
-			n->dado.expr->tipo = REAL;
-		}else{
-			n->dado.expr->tipo = INTEGER;
-		}
+		no_arvore *n = criar_no_expressao(MOD, (void *) $1, (void *) $3); 
+		n->dado.expr->tipo = INTEGER;
 		$$ = (long int) n;
 	}
 	|'('expressao')'
@@ -367,4 +373,27 @@ expressaobool:
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
+	;
+
+chamadafuncao:
+	ID '('listapar')'';'
+	{
+		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) $1);
+		if(s == NULL)
+			yyerror("Identificador não declarado");
+		else  {
+			no_arvore *n = criar_no_chamada((simbolo*)s, (void*)$3);
+			$$ = (long int) n;
+		}
+	}
+	;
+
+listapar:
+	args
+	|
+	;
+
+args:
+	args ',' expressao
+	|expressao
 	;

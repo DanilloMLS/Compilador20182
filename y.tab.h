@@ -87,8 +87,9 @@ extern int yydebug;
     EXPR = 297,
     STMTS = 298,
     IFELSE = 299,
-    UMINUS = 300,
-    NO_ELSE = 301
+    CHAMADA = 300,
+    UMINUS = 301,
+    NO_ELSE = 302
   };
 #endif
 /* Tokens.  */
@@ -134,8 +135,9 @@ extern int yydebug;
 #define EXPR 297
 #define STMTS 298
 #define IFELSE 299
-#define UMINUS 300
-#define NO_ELSE 301
+#define CHAMADA 300
+#define UMINUS 301
+#define NO_ELSE 302
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

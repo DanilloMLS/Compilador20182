@@ -3,17 +3,14 @@ program teste;
 var i, j: integer;
 k: real;
 
+procedure p(a:integer);
+var
+	b:real;
+begin
+	b:=5+1;
+end;
+
 begin 
-    i:=1+2-2;
-    write(i);
-    read(k);
-    for i:=1 to 3 do:
-    begin
-        if(i > 2)then:
-        var j: integer;
-        begin
-            j:= 2+2;
-        end;
-    end;
-   
+	j:=7;
+	p(8);
 end.

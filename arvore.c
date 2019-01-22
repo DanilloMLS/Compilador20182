@@ -123,15 +123,45 @@ no_arvore * criar_no_for(void* attrfor, numero* limite, void* bloco){
 	return novo;
 }
 
+//procedimento
+t_procedure * criar_procedure(simbolo* id, void* atributos, void* bloco){
+	t_procedure *novo = (t_procedure*) malloc(sizeof(t_procedure));
+	novo->id = id;
+	novo->atributos = atributos;
+	novo->bloco = bloco;
+	return novo;
+}
+
+no_arvore * criar_no_procedure(simbolo* id, void* atributos, void* bloco){
+	no_arvore *novo = (no_arvore*) malloc(sizeof(no_arvore));
+	novo->tipo = PROCEDURE;
+	novo->dado.procedure = criar_procedure(id, atributos, bloco);
+	//printf("%d",id);
+	return novo;
+}
+
+//chamada de função
+t_chamada * criar_chamada(simbolo* id, void* argumentos){
+	t_chamada *novo = (t_chamada*) malloc(sizeof(t_chamada));
+	novo->id = id;
+	novo->argumentos = argumentos;
+	return novo;
+}
+
+no_arvore * criar_no_chamada(simbolo* id, void* argumentos){
+	no_arvore *novo = (no_arvore*) malloc(sizeof(no_arvore));
+	novo->tipo = CHAMADA;
+	novo->dado.chamada = criar_chamada(id, argumentos);
+	return novo;
+}
+
 void imprimir_arvore(no_arvore *no){
     if (no != NULL){
 	//printf("\n");
         switch (no->tipo){
             case BLOCK:
-		printf("BLOCO-------------------------------------\n");
                 imprimir_arvore(no->dado.stmts->stmt);
                 printf("\nBloco\n");
-		printf("Fim do BLOCO------------------------------\n");
                 break;
             
             case STMTS:           
@@ -153,9 +183,7 @@ void imprimir_arvore(no_arvore *no){
                     if(no->dado.expr->esq != NULL)
                         imprimir_arvore((no_arvore*)no->dado.expr->esq);
 			printf("%d\n", no->dado.expr->op);
-                }else{
-			//printf("%s", no->dado.expr->op);
-		}
+                }
                 printf("EXPR: ");
                 break;
             
@@ -194,6 +222,19 @@ void imprimir_arvore(no_arvore *no){
                 
                 printf("Termino FOR-----------------------------------\n");
                 break;
+
+	    case PROCEDURE:
+		printf("PROCEDURE-------------------------------------\n");
+		imprimir_arvore((no_arvore*)no->dado.procedure->id);
+		imprimir_arvore((no_arvore*)no->dado.procedure->bloco);
+		imprimir_arvore((no_arvore*)no->dado.procedure->atributos);
+		printf("Termino PROCEDURE-----------------------------\n");
+		break;
+
+	    case CHAMADA:
+		//imprimir_arvore((no_arvore*)no->dado.chamada->id);
+		//imprimir_arvore((no_arvore*)no->dado.chamada->argumentos);
+		printf("CHAMADA\n");
             
             default:
                 printf("Tipo inexistente -- Tipo %d\n", no->tipo);           

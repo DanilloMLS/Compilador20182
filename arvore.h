@@ -47,6 +47,23 @@ typedef struct t_for{
 	numero* limite;
 	void* bloco;
 }t_for;
+
+typedef struct t_procedure{
+	simbolo *id;
+	void *atributos;
+	void *bloco;
+}t_procedure;
+
+typedef struct t_chamada{
+	simbolo *id;
+	void *argumentos;
+}t_chamada;
+
+typedef struct t_array{
+	simbolo *id;
+	int *indice;
+}t_array;
+
 //Simula a superclasse abstrata 
 typedef union valor_sintatico {
 	t_expr *expr;
@@ -57,6 +74,9 @@ typedef union valor_sintatico {
 	t_read *read;
 	t_ifelse *ifelse;
 	t_for *forr;
+	t_procedure *procedure;
+	t_chamada *chamada;
+	t_array *array;
 } valor_sintatico;
 
 typedef struct no_arvore {
@@ -88,5 +108,11 @@ no_arvore * criar_no_ifelse(void* expbool_if, void* bloco_if, void* bloco_else);
 
 no_arvore * criar_no_for(void* attrfor, numero* limite, void* bloco);
 t_for * criar_for(void* attrfor, numero* limite, void* bloco);
+
+t_procedure * criar_procedure(simbolo* id, void* atributos, void* bloco);
+no_arvore * criar_no_procedure(simbolo* id, void* atributos, void* bloco);
+
+t_chamada * criar_chamada(simbolo* id, void* argumentos);
+no_arvore * criar_no_chamada(simbolo* id, void* argumentos);
 
 #endif
