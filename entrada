@@ -1,54 +1,36 @@
 program teste;
-var
-	p:array[1..20] of integer;
-	a:integer;
-	b:integer;
-	c,d:real;
-	x:integer;
-	z: array[1..5] of integer;
-	t,u: array[1..10] of real;
-	y,w:integer;
-	v:real;
 
-procedure soma(i,j:integer;k:real);
+var i, j: integer;
+k: real;
+z:array[0..10] of integer;
+
+
+
+procedure p(a:integer);
 var
-	hjk:real;
-	k:array[1..3] of real;
+	b:real;
 begin
-	a:=2<>2<>3;
-	menos(a);
+	b:=5+1;
 end;
 
+procedure r;
 var
-	o: real;
-
-procedure menos(valor:real);
-var
-	r: integer;
+	c:integer;
 begin
-	r:=2<>2;
+	c:=1;
 end;
 
-begin
-	a:=2<>2;
-	read(b);
-	d:=2+6*5-a/2.5*(a)+j[1];
-	soma(i,j);
-	while(a=1) do:
+
+
+
+begin 
+	j:=z[2]+9;
+	p(8);
+	for i:=0 to 10 do:
 	begin
-		b:=2;
-	end;
-	write(a);
-	if (a<2) then
-	begin
-		if (b>6) then
+		if(i>6) then:
 		begin
-			a:=3;
+			i:=3+6*5;
 		end;
-	end
-	else
-	begin
-		a:=1;
 	end;
-	p:=1;
 end.
