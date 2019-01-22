@@ -269,7 +269,7 @@ expressao:
 		$$ = (long int) n;
 	}
 	|expressao MULT expressao
-	{	printf("multip");
+	{	
 		no_arvore *n = criar_no_expressao(MULT, (void *) $1, (void *) $3); 
 		if(((no_arvore*)$1)->dado.expr->tipo == REAL || ((no_arvore*)$3)->dado.expr->tipo == REAL){
 			n->dado.expr->tipo = REAL;

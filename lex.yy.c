@@ -2030,8 +2030,5 @@ void yyfree (void * ptr )
 int yywrap(){
 	return 1;
 }
-/*lex example4.l
-yacc -d example4.y
-cc lex.yy.c y.tab.c -o example4
-*/
+
 

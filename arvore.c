@@ -182,7 +182,7 @@ void imprimir_arvore(no_arvore *no){
                     imprimir_arvore((no_arvore*)no->dado.expr->dir);
                     if(no->dado.expr->esq != NULL)
                         imprimir_arvore((no_arvore*)no->dado.expr->esq);
-			printf("%d\n", no->dado.expr->op);
+			//printf("%d\n", no->dado.expr->op);
                 }
                 printf("EXPR: ");
                 break;

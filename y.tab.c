@@ -1630,7 +1630,7 @@ yyreduce:
 
   case 37:
 #line 272 "sintatico.y" /* yacc.c:1646  */
-    {	printf("multip");
+    {	
 		no_arvore *n = criar_no_expressao(MULT, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		if(((no_arvore*)(yyvsp[-2]))->dado.expr->tipo == REAL || ((no_arvore*)(yyvsp[0]))->dado.expr->tipo == REAL){
 			n->dado.expr->tipo = REAL;
