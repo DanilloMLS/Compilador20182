@@ -24,9 +24,9 @@ end;
 
 
 begin 
-	j:=z[2];
+	j:=z[2]+9;
 	p(8);
-	if(i > 5+j) then:
+	if(i>6) then:
 	begin
 		i:=3+6*5;
 	end;

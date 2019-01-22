@@ -391,63 +391,6 @@ atribuicaofor:
 	}
 	;
 
-/*expressaobool:
-	expressao AND expressao
-	{
-		no_arvore *n = criar_no_expressao(AND, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao OR expressao
-	{
-		no_arvore *n = criar_no_expressao(OR, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|NOT expressao
-	{
-		no_arvore *n = criar_no_expressao(NOT, NULL, (void *)$2); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao LT expressao
-	{
-		no_arvore *n = criar_no_expressao(LT, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao LE expressao
-	{
-		no_arvore *n = criar_no_expressao(LE, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao GT expressao
-	{
-		no_arvore *n = criar_no_expressao(GT, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao GE expressao
-	{
-		no_arvore *n = criar_no_expressao(GE, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao EQ expressao
-	{
-		no_arvore *n = criar_no_expressao(EQ, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	|expressao NE expressao
-	{
-		no_arvore *n = criar_no_expressao(NE, (void*)$1, (void *)$3); 
-		n->dado.expr->tipo = BOOLEAN;
-		$$ = (long int) n;
-	}
-	;*/
-
 chamadafuncao:
 	ID '('listapar')'';'
 	{

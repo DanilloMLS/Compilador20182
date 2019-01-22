@@ -544,7 +544,7 @@ static const yytype_uint16 yyrline[] =
      139,   143,   143,   162,   168,   175,   177,   179,   180,   181,
      186,   199,   217,   224,   235,   251,   261,   271,   281,   287,
      293,   295,   304,   310,   316,   322,   328,   334,   340,   346,
-     352,   361,   366,   374,   382,   452,   465,   466,   470,   471
+     352,   361,   366,   374,   382,   395,   408,   409,   413,   414
 };
 #endif
 
@@ -1810,7 +1810,7 @@ yyreduce:
     break;
 
   case 55:
-#line 453 "sintatico.y" /* yacc.c:1646  */
+#line 396 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-4]));
 		if(s == NULL)

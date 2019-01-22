@@ -225,22 +225,19 @@ void imprimir_arvore(no_arvore *no){
 
 	    case PROCEDURE:
 		printf("PROCEDURE-------------------------------------\n");
-		imprimir_arvore((no_arvore*)no->dado.procedure->id);
+		//imprimir_arvore((no_arvore*)no->dado.procedure->id);
 		imprimir_arvore((no_arvore*)no->dado.procedure->bloco);
-		imprimir_arvore((no_arvore*)no->dado.procedure->atributos);
+		//imprimir_arvore((no_arvore*)no->dado.procedure->atributos);
 		printf("Termino PROCEDURE-----------------------------\n");
 		break;
 
 	    case CHAMADA:
 		//imprimir_arvore((no_arvore*)no->dado.chamada->id);
-		//imprimir_arvore((no_arvore*)no->dado.chamada->argumentos);
+		imprimir_arvore((no_arvore*)no->dado.chamada->argumentos);
 		printf("CHAMADA\n");
             
             default:
                 printf("Tipo inexistente -- Tipo %d\n", no->tipo);           
         }
-        
-        //printf("no --%d\n", no->tipo);       
-
-    } //else {printf("NO vazio");}
+    }
 }
