@@ -115,7 +115,7 @@ declprocedimentos:
 	PROCEDURE ID argumentos ';' bloco ';'
 	{
 		simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), (char*)$2);
-		if(s == NULL && topo_pilha(pilha) != NULL){
+		if(s == NULL){
 			s = criar_simbolo((char*)$2, 0);
 			//printf("simbolo %s",s->lexema);
 			inserir_simbolo(topo_pilha(pilha), s);
@@ -301,60 +301,62 @@ expressao:
 	;
 
 expressaobool:
-	expressao AND expressao
+	expressao AND expressaobool
 	{
 		no_arvore *n = criar_no_expressao(AND, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao OR expressao
+	|expressao OR expressaobool
 	{
 		no_arvore *n = criar_no_expressao(OR, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|NOT expressao
+	|NOT expressaobool
 	{
 		no_arvore *n = criar_no_expressao(NOT, NULL, (void *)$2); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao LT expressao
+	|expressao LT expressaobool
 	{
 		no_arvore *n = criar_no_expressao(LT, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao LE expressao
+	|expressao LE expressaobool
 	{
 		no_arvore *n = criar_no_expressao(LE, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao GT expressao
+	|expressao GT expressaobool
 	{
 		no_arvore *n = criar_no_expressao(GT, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao GE expressao
+	|expressao GE expressaobool
 	{
 		no_arvore *n = criar_no_expressao(GE, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao EQ expressao
+	|expressao EQ expressaobool
 	{
 		no_arvore *n = criar_no_expressao(EQ, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
-	|expressao NE expressao
+	|expressao NE expressaobool
 	{
 		no_arvore *n = criar_no_expressao(NE, (void*)$1, (void *)$3); 
 		n->dado.expr->tipo = BOOLEAN;
 		$$ = (long int) n;
 	}
+	|expressao
+	|
 	;
 
 condicao:

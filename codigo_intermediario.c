@@ -94,7 +94,7 @@ void gerar_codigo_attr(no_arvore *raiz) {
 
 
 
-/*char * gerar_codigo_bool(no_arvore *raiz) {
+char * gerar_codigo_bool(no_arvore *raiz) {
 	char buffer[256];
 	char *addr1, *addr2, *addr3;
 	if(raiz != NULL) {
@@ -165,4 +165,4 @@ void gerar_codigo_attr(no_arvore *raiz) {
 				return addr3;
 		}
 	}	
-}*/
+}
