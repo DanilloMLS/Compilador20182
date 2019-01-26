@@ -111,16 +111,15 @@ listaids://tabela
 	;
 
 declprocedimentos:
-	
 	PROCEDURE ID argumentos ';' bloco ';'
 	{
 		simbolo* s = localizar_simbolo_no_contexto_atual(topo_pilha(pilha), (char*)$2);
 		if(s == NULL){
 			s = criar_simbolo((char*)$2, 0);
 			//printf("simbolo %s",s->lexema);
-			inserir_simbolo(topo_pilha(pilha), s);
 			no_arvore* n = criar_no_procedure((simbolo*)s, (void*)$3, (void*)$5);
 			$$ = (long int)n;
+			inserir_simbolo(topo_pilha(pilha), s);
 			imprimir_arvore((no_arvore*)$5);
 		}else{
 			yyerror("O identificador já existe!");
@@ -239,13 +238,12 @@ expressao:
 			yyerror("Identificador não declarado");
 		else{
 			numero *num = (numero*)$3;
-			no_arvore *n = criar_no_expressao(NUMBER, (void *) $3, NULL);
-			n->dado.expr->tipo = num->tipo;
-			$$ = (long int) n;
-
 			if(num->tipo == REAL){
 				yyerror("Valor de índice deve ser integer");
 			}
+			no_arvore *n = criar_no_expressao(NUMBER, (void *) $3, NULL);
+			n->dado.expr->tipo = num->tipo;
+			$$ = (long int) n;
 		}
 	}
 	|expressao ADD expressao
