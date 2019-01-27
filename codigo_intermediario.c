@@ -97,20 +97,27 @@ void gerar_codigo_attr(no_arvore *raiz) {
 char * gerar_codigo_bool(no_arvore *raiz) {
 	char buffer[256];
 	char *addr1, *addr2, *addr3;
+					printf("asdhuwqmasiqnweansciowqk"); 				
 	if(raiz != NULL) {
 		simbolo *s;
 		t_expr * dado = raiz->dado.expr;
 		switch (dado->op) {
+			case NUMBER: 
+				sprintf(buffer, "%d", (int) dado->dir);
+				return strdup(buffer);
+			case ID:
+				s = (simbolo *) dado->dir;
+				return s->lexema;
 			case AND:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case OR:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
@@ -124,42 +131,42 @@ char * gerar_codigo_bool(no_arvore *raiz) {
 
 			case GE:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case LE:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case GT:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case LT:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case EQ:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case NE:
 				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;

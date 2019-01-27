@@ -235,6 +235,14 @@ void imprimir_arvore(no_arvore *no){
 		//imprimir_arvore((no_arvore*)no->dado.chamada->id);
 		imprimir_arvore((no_arvore*)no->dado.chamada->argumentos);
 		printf("CHAMADA\n");
+
+	    case BOOLEAN:
+                imprimir_arvore((no_arvore*)no->dado.expr->esq);
+                if(no->dado.expr->dir != NULL)
+                        imprimir_arvore((no_arvore*)no->dado.expr->dir);
+			//printf("%d\n", no->dado.expr->op);
+                printf("BOOLEAN: ");
+                break;
             
             default:
                 printf("Tipo inexistente -- Tipo %d\n", no->tipo);           
