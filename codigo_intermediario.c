@@ -23,8 +23,16 @@ void gerar_codigo(no_arvore * raiz) {
 			case ATTR:
 				gerar_codigo_attr(raiz);
 				return;
-			case BOOLEAN:
+			case IFELSE:
+				//printf("entrou em expr");
+				gerar_codigo_cond(raiz);
+				return;
+			/*case BOOLEAN:
 				gerar_codigo_bool(raiz);
+				break;*/
+			/*case READ:
+				gerar_codigo_read(raiz);
+				return;*/
 		}
 
 	}
@@ -36,6 +44,7 @@ char * gerar_codigo_expr(no_arvore *raiz) {
 	if(raiz != NULL) {
 		simbolo *s;
 		t_expr * dado = raiz->dado.expr;
+		//printf("juqwewqhiuhwqiu");
 		switch (dado->op) {
 			case NUMBER: 
 				sprintf(buffer, "%d", (int) dado->dir);
@@ -78,6 +87,8 @@ char * gerar_codigo_expr(no_arvore *raiz) {
 				addr3 = gerar_temp(); 				
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
+			
+			
 
 		}
 	}	
@@ -92,15 +103,31 @@ void gerar_codigo_attr(no_arvore *raiz) {
 	printf("%s = %s\n", s->lexema, addr);
 }
 
+void gerar_codigo_cond(no_arvore *raiz) {
+	//printf("juqwewqhiuhwqiu");
+	t_ifelse * dado = raiz->dado.ifelse;
+	char * addr = gerar_codigo_bool(dado->expbool_if);
+	printf("if_false %s jump L2", addr);
+}
 
+char * gerar_codigo_read(no_arvore *raiz) {
+	char buffer[256];
+	char *addr1;
+	simbolo *s;
+	t_read * dado = raiz->dado.read;
+	s = (simbolo *) dado->id;
+	addr1 = s->lexema;
+	printf("read %s",addr1);
+}
 
 char * gerar_codigo_bool(no_arvore *raiz) {
 	char buffer[256];
-	char *addr1, *addr2, *addr3;
-					printf("asdhuwqmasiqnweansciowqk"); 				
+	char *addr1, *addr2, *addr3; 		
 	if(raiz != NULL) {
 		simbolo *s;
 		t_expr * dado = raiz->dado.expr;
+		no_arvore *no1 = (no_arvore *) dado->dir;
+		no_arvore *no2 = (no_arvore *) dado->esq;
 		switch (dado->op) {
 			case NUMBER: 
 				sprintf(buffer, "%d", (int) dado->dir);
@@ -109,65 +136,145 @@ char * gerar_codigo_bool(no_arvore *raiz) {
 				s = (simbolo *) dado->dir;
 				return s->lexema;
 			case AND:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case OR:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 			
 			case NOT:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
 				//addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
 				addr3 = gerar_temp(); 				
 				printf("%s = %c %s\n", addr3, dado->op, addr1);
 				return addr3;
 
 			case GE:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case LE:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case GT:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
 				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case LT:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case EQ:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 
 			case NE:
-				addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
-				addr2 = gerar_codigo_expr((no_arvore *) dado->esq);
-				addr3 = gerar_temp(); 				
+				if(no1->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->dir);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->dir);
+				}
+				
+				if(no2->tipo == BOOLEAN){
+					addr1 = gerar_codigo_bool((no_arvore *) dado->esq);
+				}else{
+					addr1 = gerar_codigo_expr((no_arvore *) dado->esq);
+				}
+				//addr2 = gerar_codigo_bool((no_arvore *) dado->esq);
+				addr3 = gerar_temp();
 				printf("%s = %s %c %s\n", addr3, addr1, dado->op, addr2);
 				return addr3;
 		}

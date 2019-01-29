@@ -542,10 +542,10 @@ static const yytype_uint16 yyrline[] =
        0,    55,    55,    60,    64,    65,    66,    70,    74,    75,
       76,    80,    97,   101,   106,   114,   131,   132,   136,   137,
      138,   142,   142,   161,   167,   174,   176,   178,   179,   180,
-     185,   198,   216,   223,   234,   249,   259,   269,   279,   285,
-     291,   293,   302,   308,   314,   320,   326,   332,   338,   344,
-     350,   356,   357,   361,   366,   374,   382,   395,   408,   409,
-     413,   414
+     185,   199,   217,   224,   235,   250,   260,   270,   280,   286,
+     292,   294,   303,   309,   315,   321,   327,   333,   339,   345,
+     351,   357,   359,   363,   368,   376,   384,   397,   410,   411,
+     415,   416
 };
 #endif
 
@@ -1515,13 +1515,19 @@ yyreduce:
 #line 1516 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 26:
+#line 177 "sintatico.y" /* yacc.c:1646  */
+    {gerar_codigo((no_arvore *) (yyvsp[0]));}
+#line 1522 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 29:
 #line 181 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_write((void*)(yyvsp[-2]));
 		(yyval) = (long int)n;
 	}
-#line 1525 "y.tab.c" /* yacc.c:1646  */
+#line 1531 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
@@ -1534,12 +1540,13 @@ yyreduce:
 			no_arvore *n = criar_no_read(s);
 			(yyval) = (long int)n;
 		}
+		gerar_codigo((no_arvore *) (yyvsp[-4]));
 	}
-#line 1539 "y.tab.c" /* yacc.c:1646  */
+#line 1546 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 199 "sintatico.y" /* yacc.c:1646  */
+#line 200 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-3]));
 		no_arvore* expr = (no_arvore*)(yyvsp[-1]);
@@ -1554,22 +1561,22 @@ yyreduce:
 			}
 		}
 	}
-#line 1558 "y.tab.c" /* yacc.c:1646  */
+#line 1565 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 217 "sintatico.y" /* yacc.c:1646  */
+#line 218 "sintatico.y" /* yacc.c:1646  */
     {
 		numero *num = (numero*)(yyvsp[0]);
 		no_arvore *n = criar_no_expressao(NUMBER, (void *) (yyvsp[0]), NULL);
 		n->dado.expr->tipo = num->tipo;
 		(yyval) = (long int) n;
 	}
-#line 1569 "y.tab.c" /* yacc.c:1646  */
+#line 1576 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 224 "sintatico.y" /* yacc.c:1646  */
+#line 225 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[0]));
 		if(s == NULL)
@@ -1580,11 +1587,11 @@ yyreduce:
 			(yyval) = (long int) n;
 		}
 	}
-#line 1584 "y.tab.c" /* yacc.c:1646  */
+#line 1591 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 235 "sintatico.y" /* yacc.c:1646  */
+#line 236 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-3]));
 		if(s == NULL)
@@ -1599,11 +1606,11 @@ yyreduce:
 			(yyval) = (long int) n;
 		}
 	}
-#line 1603 "y.tab.c" /* yacc.c:1646  */
+#line 1610 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 250 "sintatico.y" /* yacc.c:1646  */
+#line 251 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(ADD, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		if(((no_arvore*)(yyvsp[-2]))->dado.expr->tipo == REAL || ((no_arvore*)(yyvsp[0]))->dado.expr->tipo == REAL){
@@ -1613,11 +1620,11 @@ yyreduce:
 		}
 		(yyval) = (long int) n;
 	}
-#line 1617 "y.tab.c" /* yacc.c:1646  */
+#line 1624 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 260 "sintatico.y" /* yacc.c:1646  */
+#line 261 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(SUB, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		if(((no_arvore*)(yyvsp[-2]))->dado.expr->tipo == REAL || ((no_arvore*)(yyvsp[0]))->dado.expr->tipo == REAL){
@@ -1627,11 +1634,11 @@ yyreduce:
 		}
 		(yyval) = (long int) n;
 	}
-#line 1631 "y.tab.c" /* yacc.c:1646  */
+#line 1638 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 270 "sintatico.y" /* yacc.c:1646  */
+#line 271 "sintatico.y" /* yacc.c:1646  */
     {	
 		no_arvore *n = criar_no_expressao(MULT, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		if(((no_arvore*)(yyvsp[-2]))->dado.expr->tipo == REAL || ((no_arvore*)(yyvsp[0]))->dado.expr->tipo == REAL){
@@ -1641,164 +1648,170 @@ yyreduce:
 		}
 		(yyval) = (long int) n;
 	}
-#line 1645 "y.tab.c" /* yacc.c:1646  */
+#line 1652 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 280 "sintatico.y" /* yacc.c:1646  */
+#line 281 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(DIVV, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		n->dado.expr->tipo = REAL;
 		(yyval) = (long int) n;
 	}
-#line 1655 "y.tab.c" /* yacc.c:1646  */
+#line 1662 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 286 "sintatico.y" /* yacc.c:1646  */
+#line 287 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(MOD, (void *) (yyvsp[-2]), (void *) (yyvsp[0])); 
 		n->dado.expr->tipo = INTEGER;
 		(yyval) = (long int) n;
 	}
-#line 1665 "y.tab.c" /* yacc.c:1646  */
+#line 1672 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 292 "sintatico.y" /* yacc.c:1646  */
+#line 293 "sintatico.y" /* yacc.c:1646  */
     {(yyval) = (yyvsp[-1]);}
-#line 1671 "y.tab.c" /* yacc.c:1646  */
+#line 1678 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 294 "sintatico.y" /* yacc.c:1646  */
+#line 295 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(UMINUS, NULL, (void *) (yyvsp[0])); 
 		n->dado.expr->tipo = ((no_arvore*)(yyvsp[0]))->dado.expr->tipo;
 		(yyval) = (long int) n;
 	}
-#line 1681 "y.tab.c" /* yacc.c:1646  */
+#line 1688 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 303 "sintatico.y" /* yacc.c:1646  */
+#line 304 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(AND, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1691 "y.tab.c" /* yacc.c:1646  */
+#line 1698 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 309 "sintatico.y" /* yacc.c:1646  */
+#line 310 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(OR, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1708 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 315 "sintatico.y" /* yacc.c:1646  */
+#line 316 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(NOT, NULL, (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1711 "y.tab.c" /* yacc.c:1646  */
+#line 1718 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 321 "sintatico.y" /* yacc.c:1646  */
+#line 322 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(LT, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1721 "y.tab.c" /* yacc.c:1646  */
+#line 1728 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 327 "sintatico.y" /* yacc.c:1646  */
+#line 328 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(LE, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1731 "y.tab.c" /* yacc.c:1646  */
+#line 1738 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 333 "sintatico.y" /* yacc.c:1646  */
+#line 334 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(GT, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1741 "y.tab.c" /* yacc.c:1646  */
+#line 1748 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 339 "sintatico.y" /* yacc.c:1646  */
+#line 340 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(GE, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1751 "y.tab.c" /* yacc.c:1646  */
+#line 1758 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 345 "sintatico.y" /* yacc.c:1646  */
+#line 346 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(EQ, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1761 "y.tab.c" /* yacc.c:1646  */
+#line 1768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 351 "sintatico.y" /* yacc.c:1646  */
+#line 352 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_expressao(NE, (void*)(yyvsp[-2]), (void *)(yyvsp[0])); 
 		n->dado.expr->tipo = BOOLEAN;
 		(yyval) = (long int) n;
 	}
-#line 1771 "y.tab.c" /* yacc.c:1646  */
+#line 1778 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 358 "sintatico.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);}
+#line 1784 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 362 "sintatico.y" /* yacc.c:1646  */
+#line 364 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_ifelse((void*)(yyvsp[-5]), (void*)(yyvsp[-1]), NULL);
 		(yyval) = (long int) n;
 	}
-#line 1780 "y.tab.c" /* yacc.c:1646  */
+#line 1793 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 367 "sintatico.y" /* yacc.c:1646  */
+#line 369 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_ifelse((void*)(yyvsp[-7]), (void*)(yyvsp[-3]), (void*)(yyvsp[-1]));
 		(yyval) = (long int) n;
 	}
-#line 1789 "y.tab.c" /* yacc.c:1646  */
+#line 1802 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 375 "sintatico.y" /* yacc.c:1646  */
+#line 377 "sintatico.y" /* yacc.c:1646  */
     {
 		no_arvore *n = criar_no_for((void*)(yyvsp[-6]),(numero*)(yyvsp[-4]),(void*)(yyvsp[-1]));
 		(yyval) = (long int) n;
 	}
-#line 1798 "y.tab.c" /* yacc.c:1646  */
+#line 1811 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 383 "sintatico.y" /* yacc.c:1646  */
+#line 385 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-2]));
 		if(s == NULL)
@@ -1808,11 +1821,11 @@ yyreduce:
 			(yyval) = (long int) n;
 		}
 	}
-#line 1812 "y.tab.c" /* yacc.c:1646  */
+#line 1825 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 396 "sintatico.y" /* yacc.c:1646  */
+#line 398 "sintatico.y" /* yacc.c:1646  */
     {
 		simbolo * s = localizar_simbolo(topo_pilha(pilha), (char *) (yyvsp[-4]));
 		if(s == NULL)
@@ -1822,11 +1835,11 @@ yyreduce:
 			(yyval) = (long int) n;
 		}
 	}
-#line 1826 "y.tab.c" /* yacc.c:1646  */
+#line 1839 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1830 "y.tab.c" /* yacc.c:1646  */
+#line 1843 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

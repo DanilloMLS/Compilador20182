@@ -7,6 +7,7 @@
 void gerar_codigo(no_arvore * raiz);
 char * gerar_codigo_expr(no_arvore *raiz);
 void gerar_codigo_attr(no_arvore *raiz);
+void gerar_codigo_cond(no_arvore *raiz);
 char * gerar_codigo_bool(no_arvore *raiz);
 
 #endif

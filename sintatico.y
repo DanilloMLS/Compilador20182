@@ -174,7 +174,7 @@ comando:
 	atribuicao
 	{gerar_codigo((no_arvore *) $1);}
 	|condicao
-	//{gerar_codigo((no_arvore *) $1);}
+	{gerar_codigo((no_arvore *) $1);}
 	|repeticao
 	|chamadafuncao
 	|WRITE'('expressao')'';'
@@ -191,6 +191,7 @@ comando:
 			no_arvore *n = criar_no_read(s);
 			$$ = (long int)n;
 		}
+		gerar_codigo((no_arvore *) $1);
 	}
 	;
 
@@ -354,6 +355,7 @@ expressaobool:
 		$$ = (long int) n;
 	}
 	|expressao
+	{$$ = $1;}
 	|
 	;
 
